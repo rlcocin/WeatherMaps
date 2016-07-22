@@ -41,7 +41,6 @@ public class MapActivity extends WeatherMapsActivity implements GoogleMap.OnMapC
 
     private GoogleMap mMap;
 
-
     private Marker mMarker;
 
     @Override
@@ -59,20 +58,6 @@ public class MapActivity extends WeatherMapsActivity implements GoogleMap.OnMapC
         setUpMapIfNeeded();
     }
 
-    private void setUpMapIfNeeded() {
-        if (mMap == null) {
-            mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
-                    .getMap();
-            if (mMap != null) {
-                setUpMap();
-            }
-        }
-    }
-
-    private void setUpMap() {
-        mMap.setOnMapClickListener(this);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
@@ -88,6 +73,36 @@ public class MapActivity extends WeatherMapsActivity implements GoogleMap.OnMapC
         }
     }
 
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.search:
+                if (mMarker != null) {
+                    showProgressDialog();
+                    MapManager.requestWeather(mMarker.getPosition(), this);
+                } else {
+                    Toast.makeText(this, this.getString(R.string.select_position), Toast.LENGTH_LONG).show();
+                }
+                break;
+            default:
+                break;
+        }
+        return false;
+    }
+
+    private void setUpMapIfNeeded() {
+        if (mMap == null) {
+            mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
+                    .getMap();
+            if (mMap != null) {
+                setUpMap();
+            }
+        }
+    }
+
+    private void setUpMap() {
+        mMap.setOnMapClickListener(this);
+    }
 
 
     private void showProgressDialog() {
@@ -99,23 +114,6 @@ public class MapActivity extends WeatherMapsActivity implements GoogleMap.OnMapC
 
     private void dismissProgressDialog() {
         mProgressDialog.hide();
-    }
-
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.search:
-                if (mMarker != null) {
-                    showProgressDialog();
-                    MapManager.requestWeather(mMarker.getPosition(),this);
-                } else {
-                    Toast.makeText(this, this.getString(R.string.select_position), Toast.LENGTH_LONG).show();
-                }
-                break;
-            default:
-                break;
-        }
-        return false;
     }
 
     @Override

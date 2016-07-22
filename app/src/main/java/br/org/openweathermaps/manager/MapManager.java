@@ -17,9 +17,7 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * Created by Rafael on 22/07/2016.
- */
+
 public class MapManager {
 
 
